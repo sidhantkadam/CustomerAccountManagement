@@ -47,6 +47,6 @@ public class CustomerAccountController
 	@GetMapping("/test")
 	public String test()
 	{
-		return "hello";
+		return "Working Fine !";
 	}
 }
