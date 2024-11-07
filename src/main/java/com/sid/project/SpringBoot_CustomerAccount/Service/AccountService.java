@@ -6,10 +6,10 @@ public interface AccountService
 {
 	void createAccount(CustomerDto customerDto);
 	
-	CustomerDto fetchAccount(Long mobileNo);
+	CustomerDto fetchAccount(String mobileNo);
 	
-	boolean updateAccount(CustomerDto customerDto);
+	CustomerDto updateAccount(CustomerDto customerDto, Long customerId);
 	
-	boolean deleteAccount(Long mobileNo);
+	boolean deleteAccount(String mobileNo);
 
 }

@@ -2,12 +2,14 @@ package com.sid.project.SpringBoot_CustomerAccount.Service;
 
 import java.util.Optional;
 import java.util.Random;
+import com.sid.project.SpringBoot_CustomerAccount.Constants.AccountsConstants;
 import com.sid.project.SpringBoot_CustomerAccount.DTO.AccountDto;
 import com.sid.project.SpringBoot_CustomerAccount.DTO.CustomerDto;
 import com.sid.project.SpringBoot_CustomerAccount.Entity.Account;
 import com.sid.project.SpringBoot_CustomerAccount.Entity.Customer;
 import com.sid.project.SpringBoot_CustomerAccount.Exception.CustomerAlreadyExistsException;
-import com.sid.project.SpringBoot_CustomerAccount.ModelMapper.MapperClass;
+import com.sid.project.SpringBoot_CustomerAccount.Exception.ResourceNotFoundException;
+import com.sid.project.SpringBoot_CustomerAccount.ModelMapper.ModelMapper;
 import com.sid.project.SpringBoot_CustomerAccount.Repository.AccountRepo;
 import com.sid.project.SpringBoot_CustomerAccount.Repository.CustomerRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,16 +25,17 @@ public class AccountServiceImpl implements AccountService
 	private CustomerRepo customerRepo;
 	
 	@Autowired
-	private MapperClass mapperclass;
+	private ModelMapper modelMapper;
 
 	@Override
 	public void createAccount(CustomerDto customerDto)
 	{
-		Customer customer = mapperclass.customerDtotoCustomer(customerDto);
+		Customer customer = modelMapper.customerDtoToCustomer(customerDto);
 		Optional<Customer> optionalCustomer = customerRepo.findByMobileNo(customer.getMobileNo());
-		if(optionalCustomer.isPresent()) {
-			throw new CustomerAlreadyExistsException("Customer already registered with given mobileNumber "
-					+customerDto.getMobileNo());
+		if(optionalCustomer.isPresent())
+		{
+			throw new CustomerAlreadyExistsException("Customer already registered with given mobileNo "
+					+ customer.getMobileNo());
 		}
 		Customer savedCustomer  = customerRepo.save(customer);
 		accountRepo.save(createNewAccount(savedCustomer));
@@ -43,40 +46,55 @@ public class AccountServiceImpl implements AccountService
 		Account newAccount = new Account();
 		newAccount.setCustomerId(customer.getCustomerId());
 		Long randomAcc = 100000000L + new Random().nextInt(900000000);
+
 		newAccount.setAccountNo(randomAcc);
-		newAccount.setAccountType("Savings");
-		newAccount.setBranchAddress("Maharashtra India");
+		newAccount.setAccountType(AccountsConstants.SAVINGS);
+		newAccount.setBranchAddress(AccountsConstants.ADDRESS);
 		return newAccount;
 	}
 
 	@Override
-	public CustomerDto fetchAccount(Long mobileNo)
+	public CustomerDto fetchAccount(String mobileNo)
 	{
-		Optional<Customer> customer = customerRepo.findByMobileNo(mobileNo);
+		Customer customer = customerRepo.findByMobileNo(mobileNo)
+				.orElseThrow(() -> new ResourceNotFoundException("Customer", "mobileNo", mobileNo));
 		
-		Account account = accountRepo.findByCustomerId(customer.get().getCustomerId());
+		Account account = accountRepo.findByCustomerId(customer.getCustomerId())
+				.orElseThrow(() -> new ResourceNotFoundException("Account", "customerId", customer.getCustomerId().toString())
+		);
 		
-		CustomerDto customerDto = mapperclass.customerToCustomerDto(customer.get());
-		AccountDto accountDto = mapperclass.accountToAccountDto(account);
+		CustomerDto customerDto = modelMapper.customerToCustomerDto(customer);
+		AccountDto accountDto = modelMapper.accountToAccountDto(account);
 		customerDto.setAccountDto(accountDto);
 		return customerDto;
 	}
 
 	@Override
-	public boolean updateAccount(CustomerDto customerDto) 
+	public CustomerDto updateAccount(CustomerDto customerDto, Long customerId)
 	{
+		Account account = accountRepo.findByCustomerId(customerId)
+				.orElseThrow(()-> new ResourceNotFoundException("Account", "CustomerId", customerId.toString()));
+		accountRepo.save(account);
 
-		return false;
+        customerRepo.findByCustomerId(account.getCustomerId())
+                .orElseThrow(() -> new ResourceNotFoundException("Customer", "CustomerId", customerId.toString()));
+		Customer customer = modelMapper.customerDtoToCustomer(customerDto);
+		customer.setCustomerId(account.getCustomerId());
+        customerRepo.save(customer);
+
+		CustomerDto customerDto1 = modelMapper.customerToCustomerDto(customer);
+		AccountDto accountDto = modelMapper.accountToAccountDto(account);
+		customerDto1.setAccountDto(accountDto);
+        return customerDto1;
 	}
 
 	@Override
-	public boolean deleteAccount(Long mobileNo) 
+	public boolean deleteAccount(String mobileNo)
 	{
 		Customer customer = customerRepo.findByMobileNo(mobileNo)
-				.orElseThrow();
+				.orElseThrow(() -> new ResourceNotFoundException("Customer", "mobileNo", mobileNo));
 		accountRepo.deleteAccountByCustomerId(customer.getCustomerId());
 		customerRepo.deleteById(customer.getCustomerId());
 		return true;
 	}
-
 }

@@ -1,65 +1,27 @@
 package com.sid.project.SpringBoot_CustomerAccount.DTO;
 
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
+@Getter
+@Setter
+@NoArgsConstructor
+@Data
 public class CustomerDto 
 {
-	@NotEmpty
+	@NotEmpty(message = "Name can not be a null or empty")
+	@Size(min = 5, max = 30, message = "The length of the customer name should be between 5 and 30")
 	private String name;
-	@NotNull
-	private Long mobileNo;
 	@NotEmpty
+	@Pattern(regexp = "(^$|[0-9]{10})", message = "Mobile number must be 10 digits")
+	private String mobileNo;
+	@NotEmpty
+	@Email(message = "Email address should be a valid value")
 	private String email;
-	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Long getMobileNo() {
-		return mobileNo;
-	}
-
-	public void setMobileNo(Long mobileNo) {
-		this.mobileNo = mobileNo;
-	}
-
-	public @NotEmpty String getEmail() {
-		return email;
-	}
-
-	public void setEmail(@NotEmpty String email) {
-		this.email = email;
-	}
-
-	public AccountDto getAccountDto() {
-		return accountDto;
-	}
-
-	public void setAccountDto(AccountDto accountDto) 
-	{
-		this.accountDto = accountDto;
-	}
 
 	private AccountDto accountDto;
-
-	public CustomerDto(@NotEmpty String name, @NotNull Long mobileNo, @NotEmpty String email, AccountDto accountDto) {
-		super();
-		this.name = name;
-		this.mobileNo = mobileNo;
-		this.email = email;
-		this.accountDto = accountDto;
-	}
-
-	public CustomerDto() {
-	
-	}
 }

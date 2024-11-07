@@ -2,43 +2,18 @@ package com.sid.project.SpringBoot_CustomerAccount.DTO;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import lombok.*;
 
-
+@Getter
+@Setter
+@NoArgsConstructor
+@Data
 public class AccountDto 
 {
-	@NotNull
 	private Long accountNo;
-	@NotEmpty
+	@NotEmpty(message = "BranchAddress can not be a null or empty")
 	private String branchAddress;
-	@NotEmpty
+	@NotEmpty(message = "AccountType can not be a null or empty")
 	private String accountType;
-	public Long getAccountNo() {
-		return accountNo;
-	}
-	public void setAccountNo(Long accountNo) {
-		this.accountNo = accountNo;
-	}
-	public String getBranchAddress() {
-		return branchAddress;
-	}
-	public void setBranchAddress(String branchAddress) {
-		this.branchAddress = branchAddress;
-	}
-	public String getAccountType() {
-		return accountType;
-	}
-	public void setAccountType(String accountType) {
-		this.accountType = accountType;
-	}
-	
-	public AccountDto(@NotNull Long accountNo, @NotEmpty String branchAddress, @NotEmpty String accountType) 
-	{
-		super();
-		this.accountNo = accountNo;
-		this.branchAddress = branchAddress;
-		this.accountType = accountType;
-	}
-	public AccountDto() 
-	{
-	}
 }

@@ -8,13 +8,14 @@ import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface MapperClass
+public interface ModelMapper
 {
-	Customer customerDtotoCustomer (CustomerDto customerDto);
-	
-	CustomerDto customerToCustomerDto(Customer customer);
-	
-	Account accountDtoToAccount(AccountDto accountDto);
-	
-	AccountDto accountToAccountDto(Account account);
+    Account accountDtoToAccount (AccountDto accountDto);
+
+    AccountDto accountToAccountDto(Account account);
+
+    Customer customerDtoToCustomer(CustomerDto customerDto);
+
+    CustomerDto customerToCustomerDto(Customer customer);
+
 }
