@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "4138dc4b-431e-490a-8145-371ff4237d55",
+		"name": "Customer Loans",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "39420104"
+	},
+	"item": [
+		{
+			"name": "Test",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8083/api/v3/loans/test"
+			},
+			"response": []
+		},
+		{
+			"name": "Create Loan ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/api/v3/loans/createLoan?mobileNo=8855890855",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v3",
+						"loans",
+						"createLoan"
+					],
+					"query": [
+						{
+							"key": "mobileNo",
+							"value": "8855890855"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fetch Loan",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/api/v3/loans/fetchLoan?mobileNo=8855890855",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v3",
+						"loans",
+						"fetchLoan"
+					],
+					"query": [
+						{
+							"key": "mobileNo",
+							"value": "8855890855"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Loan",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mobileNo\": \"8855890857\",\r\n    \"loanNumber\": \"100384993619\",\r\n    \"loanType\": \"Home Loan\",\r\n    \"totalLoan\": 100000,\r\n    \"amountPaid\": 10000,\r\n    \"outstandingAmount\": 90000\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "http://localhost:8083/api/v3/loans/updateLoan"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Loan",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8083/api/v3/loans/deleteLoan?mobileNo=8855890857",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"api",
+						"v3",
+						"loans",
+						"deleteLoan"
+					],
+					"query": [
+						{
+							"key": "mobileNo",
+							"value": "8855890857"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
