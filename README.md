@@ -1,2 +1,2 @@
 # Customer_Account_Management
-Customer Account management based on RESTful API's with JPA Repo, MySql DB, Spring Boot framework
+Customer Account Management Springboot Application based on REST'ful API's with Spring Data JPA, Spring Cloud Gateway, MySql DB, Spring Validations, Spring Actuator using Spring framework.
