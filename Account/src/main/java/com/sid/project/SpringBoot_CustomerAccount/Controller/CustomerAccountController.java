@@ -43,9 +43,9 @@ public class CustomerAccountController
 	}
 
 	@PutMapping("/updateAccount/{customerId}")
-	public ResponseEntity<CustomerDto> updateAccountDetails(@Valid @RequestBody CustomerDto customerDto, @PathVariable Long customerId)
+	public ResponseEntity<CustomerDto> updateAccountDetails(@Valid @RequestBody CustomerDto customerDto)
 	{
-		accountService.updateAccount(customerDto, customerId);
+		accountService.updateAccount(customerDto);
 		return ResponseEntity.status(HttpStatus.OK).body(customerDto);
 	}
 

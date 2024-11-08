@@ -8,7 +8,7 @@ public interface AccountService
 	
 	CustomerDto fetchAccount(String mobileNo);
 	
-	CustomerDto updateAccount(CustomerDto customerDto, Long customerId);
+	CustomerDto updateAccount(CustomerDto customerDto);
 	
 	boolean deleteAccount(String mobileNo);
 

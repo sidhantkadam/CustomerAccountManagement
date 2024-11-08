@@ -70,22 +70,25 @@ public class AccountServiceImpl implements AccountService
 	}
 
 	@Override
-	public CustomerDto updateAccount(CustomerDto customerDto, Long customerId)
+	public CustomerDto updateAccount(CustomerDto customerDto)
 	{
-		Account account = accountRepo.findByCustomerId(customerId)
-				.orElseThrow(()-> new ResourceNotFoundException("Account", "CustomerId", customerId.toString()));
+
+		Account CheckAccount = accountRepo.findById(customerDto.getAccountDto().getAccountNo())
+				.orElseThrow(()-> new ResourceNotFoundException("Account", "AccountNo.", customerDto.getAccountDto().getAccountNo().toString()));
+		AccountDto accountDto  = customerDto.getAccountDto();
+		Account account = modelMapper.accountDtoToAccount(accountDto);
+		account.setCustomerId(CheckAccount.getCustomerId());
 		accountRepo.save(account);
 
-        customerRepo.findByCustomerId(account.getCustomerId())
+		Long customerId = account.getCustomerId();
+
+        Customer CheckCustomer = customerRepo.findByCustomerId(account.getCustomerId())
                 .orElseThrow(() -> new ResourceNotFoundException("Customer", "CustomerId", customerId.toString()));
 		Customer customer = modelMapper.customerDtoToCustomer(customerDto);
-		customer.setCustomerId(account.getCustomerId());
+		customer.setCustomerId(CheckCustomer.getCustomerId());
         customerRepo.save(customer);
 
-		CustomerDto customerDto1 = modelMapper.customerToCustomerDto(customer);
-		AccountDto accountDto = modelMapper.accountToAccountDto(account);
-		customerDto1.setAccountDto(accountDto);
-        return customerDto1;
+        return customerDto;
 	}
 
 	@Override
