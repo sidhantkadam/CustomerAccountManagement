@@ -13,7 +13,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 		info = @Info(
 				title = "Cards microservice REST API Documentation",
 				description = "NSK Bank Cards microservice REST API Documentation",
-				version = "v1",
+				version = "v3",
 				contact = @Contact(
 						name = "Sid K",
 						email = "siddhantkadam044@gmail.com"
