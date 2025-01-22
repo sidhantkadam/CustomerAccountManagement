@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class Account
+public class Account extends BaseEntity
 {
 	@Id
 	@NotNull

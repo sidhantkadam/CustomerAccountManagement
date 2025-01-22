@@ -12,7 +12,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class Loan
+public class Loan extends BaseEntity
 {
 
     @Id

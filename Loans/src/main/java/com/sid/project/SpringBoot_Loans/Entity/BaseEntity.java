@@ -1,4 +1,4 @@
-package com.sid.project.SpringBoot_Cards.Entity;
+package com.sid.project.SpringBoot_Loans.Entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

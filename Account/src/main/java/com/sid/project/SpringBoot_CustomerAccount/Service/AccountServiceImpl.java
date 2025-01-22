@@ -12,10 +12,12 @@ import com.sid.project.SpringBoot_CustomerAccount.Exception.ResourceNotFoundExce
 import com.sid.project.SpringBoot_CustomerAccount.ModelMapper.ModelMapper;
 import com.sid.project.SpringBoot_CustomerAccount.Repository.AccountRepo;
 import com.sid.project.SpringBoot_CustomerAccount.Repository.CustomerRepo;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@AllArgsConstructor
 public class AccountServiceImpl implements AccountService
 {
 	@Autowired
