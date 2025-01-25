@@ -2,6 +2,7 @@ package com.sid.project.SpringBoot_CustomerAccount.Controller;
 
 
 import com.sid.project.SpringBoot_CustomerAccount.Constants.AccountsConstants;
+import com.sid.project.SpringBoot_CustomerAccount.DTO.AccountContactInfoDto;
 import com.sid.project.SpringBoot_CustomerAccount.DTO.AccountDto;
 import com.sid.project.SpringBoot_CustomerAccount.DTO.CustomerDto;
 import com.sid.project.SpringBoot_CustomerAccount.DTO.ResponseDto;
@@ -10,6 +11,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +22,24 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/v1/account")
 @Validated
-@AllArgsConstructor
 public class CustomerAccountController
 {
+	private final AccountService accountService;
+
+	@Value("${build.version}")
+	private String buildVersion;
+
 	@Autowired
-	private AccountService accountService;
-	
-	@PostMapping("/createAccount")
+	private Environment environment;
+
+	@Autowired
+	private AccountContactInfoDto accountContactInfoDto;
+
+	public CustomerAccountController(AccountService accountService) {
+		this.accountService = accountService;
+	}
+
+    @PostMapping("/createAccount")
 	public ResponseEntity<ResponseDto> createAccount(@RequestBody CustomerDto customerDto)
 	{
 		accountService.createAccount(customerDto);
@@ -73,5 +87,23 @@ public class CustomerAccountController
 	public String test()
 	{
 		return "Working Fine !";
+	}
+
+	@GetMapping("/build-info")
+	public ResponseEntity<String> getVersionInfo()
+	{
+		return ResponseEntity.status(HttpStatus.FOUND).body(buildVersion);
+	}
+
+	@GetMapping("/java-version")
+	public ResponseEntity<String> getJavaVersion()
+	{
+		return ResponseEntity.status(HttpStatus.FOUND).body(environment.getProperty("JAVA_HOME"));
+	}
+
+	@GetMapping("/contact-info")
+	public ResponseEntity<AccountContactInfoDto> getContactInfo()
+	{
+		return ResponseEntity.status(HttpStatus.FOUND).body(accountContactInfoDto);
 	}
 }

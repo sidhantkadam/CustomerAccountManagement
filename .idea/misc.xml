@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/Loans/pom.xml" />
         <option value="$PROJECT_DIR$/Account/pom.xml" />
         <option value="$PROJECT_DIR$/Spring_Cloud_Gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/config_server/pom.xml" />
       </list>
     </option>
   </component>

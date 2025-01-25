@@ -2,11 +2,14 @@ package com.sid.project.SpringBoot_Cards.Controller;
 
 import com.sid.project.SpringBoot_Cards.Constants.CardsConstants;
 import com.sid.project.SpringBoot_Cards.DTO.CardDTO;
+import com.sid.project.SpringBoot_Cards.DTO.CardsContactInfoDto;
 import com.sid.project.SpringBoot_Cards.Exception.Response;
 import com.sid.project.SpringBoot_Cards.Service.CardService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +19,20 @@ import org.springframework.web.bind.annotation.*;
 public class CardsController
 {
 
+    private final CardService cardService;
+
+    @Value("${build.version}")
+    private String buildverion;
+
     @Autowired
-    private CardService cardService;
+    private Environment environment;
+
+    @Autowired
+    private CardsContactInfoDto cardsContactInfoDto;
+
+    public CardsController(CardService cardService) {
+        this.cardService = cardService;
+    }
 
     @PostMapping("/generateCard")
     public ResponseEntity<Response> createCard(@Valid @RequestParam
@@ -66,5 +81,23 @@ public class CardsController
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new Response(CardsConstants.STATUS_417, CardsConstants.MESSAGE_417_DELETE));
         }
+    }
+
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getVersionInfo()
+    {
+        return ResponseEntity.status(HttpStatus.FOUND).body(buildverion);
+    }
+
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion()
+    {
+        return ResponseEntity.status(HttpStatus.FOUND).body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @GetMapping("/contact-info")
+    public ResponseEntity<CardsContactInfoDto> getContactInfo()
+    {
+        return ResponseEntity.status(HttpStatus.FOUND).body(cardsContactInfoDto);
     }
 }

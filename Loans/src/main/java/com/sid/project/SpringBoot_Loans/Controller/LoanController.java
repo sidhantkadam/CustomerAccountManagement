@@ -2,11 +2,14 @@ package com.sid.project.SpringBoot_Loans.Controller;
 
 import com.sid.project.SpringBoot_Loans.Constants.LoanConstants;
 import com.sid.project.SpringBoot_Loans.DTO.LoanDTO;
+import com.sid.project.SpringBoot_Loans.DTO.LoansContactInfoDto;
 import com.sid.project.SpringBoot_Loans.Exception.Response;
 import com.sid.project.SpringBoot_Loans.Service.LoanService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,8 +18,21 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v3/loans")
 public class LoanController
 {
+    public LoanController(LoanService loanService) {
+        this.loanService = loanService;
+    }
+
+    private final LoanService loanService;
+
+    @Value("${build.version}")
+    private String buildverion;
+
     @Autowired
-    private LoanService loanService;
+    private Environment environment;
+
+    @Autowired
+    private LoansContactInfoDto loansContactInfoDto;
+
 
     @PostMapping("/createLoan")
     public ResponseEntity<Response> createLoan(@Valid @RequestParam
@@ -76,5 +92,23 @@ public class LoanController
     public String test()
     {
         return "Test API..";
+    }
+
+    @GetMapping("/build-info")
+    public ResponseEntity<String> getVersionInfo()
+    {
+        return ResponseEntity.status(HttpStatus.FOUND).body(buildverion);
+    }
+
+    @GetMapping("/java-version")
+    public ResponseEntity<String> getJavaVersion()
+    {
+        return ResponseEntity.status(HttpStatus.FOUND).body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @GetMapping("/contact-info")
+    public ResponseEntity<LoansContactInfoDto> getContactInfo()
+    {
+        return ResponseEntity.status(HttpStatus.FOUND).body(loansContactInfoDto);
     }
 }
